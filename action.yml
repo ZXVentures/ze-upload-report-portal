@@ -1,0 +1,48 @@
+name: upload-test-report-portal
+description: That actions receives the report portal access key and the integration test
+
+inputs:
+  access_key:
+    description: 'The access key to use'
+    required: true
+  test_type:
+    description: 'The type of test to run'
+    required: true
+  api_url:
+    required: true
+  description:
+    required: true
+  project_name:
+    required: true
+  path_archive_xml:
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Clone Repository
+      uses: actions/checkout@v3
+      with:
+        repository: 'ZXVentures/ze-upload-report-portal'
+        ref: 'main'
+        path: ze-upload-report-portal
+
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Download tests results
+      uses: actions/download-artifact@v2
+
+    - name: Execute Python Script
+      run: |
+        export ACCESS_TOKEN_REPORT_PORTAL=${{ inputs.access_key }}
+        export API_URL=${{ inputs.api_url }}
+        export DESCRIPTION="${{ inputs.description }}"
+        export PROJECT_NAME=${{ inputs.project_name }}
+        export PATH_ARCHIVE_XML=${{ inputs.path_archive_xml }}
+        pip install requests
+        
+        python ze-upload-report-portal/report_portal.py
+      shell: bash
