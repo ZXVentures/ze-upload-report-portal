@@ -1,12 +1,18 @@
 import requests
 import sys
 import os
+from rename_xml import save_new_xml
 
 api_url = os.environ['API_URL']
 access_token = os.environ['ACCESS_TOKEN_REPORT_PORTAL']
 description = os.environ['DESCRIPTION']
 project_name = os.environ['PROJECT_NAME']
-path_archive_xml = os.environ['PATH_ARCHIVE_XML']
+pipe_name = os.environ['PIPE_NAME']
+repo_name = os.environ['REPO_NAME']
+branch_name = os.environ['BRANCH_NAME']
+path_archive_xml_old = os.environ['PATH_ARCHIVE_XML']
+
+path_archive_xml = save_new_xml (branch_name, pipe_name, repo_name, path_archive_xml_old )
 
 def send_report():
     url = f"{api_url}/launch/import"

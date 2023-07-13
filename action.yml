@@ -16,6 +16,12 @@ inputs:
     required: true
   path_archive_xml:
     required: true
+  repo_name:
+    required: true
+  branch_name:
+    required: true
+  pipe_name:
+    required: true
 
 runs:
   using: 'composite'
